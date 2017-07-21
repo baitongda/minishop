@@ -1,0 +1,38 @@
+<footer class="main-footer">	
+    <div class="pull-right hidden-xs">
+      点击链接加入群<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=46icc1o">【小微云商交流群】</a>
+    </div>
+    <strong>Copyright &copy; 2014-{:date('Y')} <a href="http://qasl.cn">深蓝科技</a>.</strong> All rights reserved.
+</footer>
+<script src="STATIC_PATH/plugins/jQuery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="STATIC_PATH/msgbox/js/msgbox.js"></script>
+<script type="text/javascript">
+function checkItem(){
+    id = '{$nav_group_id}';
+    select_class = '.li-a-'+id;
+    $(select_class)
+    $(select_class).css({
+      color: '#f6f6f6',
+      background: 'rgba(0,0,0,0.1)'
+    });
+  }
+$(document).ready(function (argument) {
+  checkItem();
+  $('.delelte-runtime').click(function(){
+    $.ajax({
+      type: "get",
+      url: '{:url('common/delelteRuntime')}',
+      success: function(data) {
+        if (data.code) {
+          msgok(data.msg);
+        } else {
+          msgerr(data.msg);
+        }
+      },
+      error: function(request) {
+        msgerr("页面错误", 5);
+      }
+    });
+  });
+});
+</script>

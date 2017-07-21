@@ -1,0 +1,161 @@
+﻿网站基本函数
+
+网站标题
+<title>{:config('web_site_title')}</title>
+网站关键字
+<meta name="keywords" content="{:config('web_site_keyword')}"/>
+网站描述
+<meta name="description" content="{:config('web_site_description')}"/>
+网站备案信息
+{:config('web_site_icp')}
+
+
+模板标签
+
+引用模板
+{template file="index/header.html" /}
+
+导航标签
+{nav name = "nav"}
+	<li><a href="{:url($nav['url'])}">{$nav.name}</a></li>
+{/nav}
+
+广告标签
+{banner name='banner' pos="1"}
+	<div class="item {eq name="key" value="0"}active{/eq}">
+		<a href="{:url($banner.link)}"><img alt="title" src="{:root_path()}{$banner.banner_path}" data-holder-rendered="true"></a>
+	</div>
+{/banner}
+
+商品分类标签
+{goodscategorys name='cate' map="pid=0" num='6'}
+	{$cate.name}
+{/goodscategorys}
+
+热销商品标签
+{hotgoods name='goods' num='4'}
+	<a href="{:url('index/goods/detail','id='.$goods.id)}">{$goods.name}</a>
+	{$goods.sell_num}
+	<img src="{:root_path()}{$goods.cover_path}" height="60" width="85">
+{/hotgoods}
+
+最新商品标签
+{newgoods name='goods' num='4'}
+	<a href="{:url('index/goods/detail','id='.$goods.id)}">{$goods.name}</a>
+	{$goods.sell_num}
+	<img src="{:root_path()}{$goods.cover_path}" height="60" width="85">
+{/newgoods}
+
+精品商品标签
+{bestgoods name='goods' num='4'}
+	<a href="{:url('index/goods/detail','id='.$goods.id)}">{$goods.name}</a>
+	{$goods.sell_num}
+	<img src="{:root_path()}{$goods.cover_path}" height="60" width="85">
+{/bestgoods}
+
+单页标签
+{pages name='page' map="id=15"}
+	{$page.content|strip_tags}
+{/pages}
+
+文章子分类文章标签
+{subcateposts name='post' cateid='8' num='4'}
+	<div class="news-picture"><img src="{$post.uuid|get_posts_cover}" width="135" height="100"></div>
+	<div class="news-text">
+		<div class="news-title">
+		{$post.title}
+		</div>
+		<div class="news-content">
+		{$post.uuid|get_val=###,'description',30}
+		</div>
+		<a id="more" class="more-off" href="{:url('index/article/detail',['id'=>$post.id,'category'=>$post.category])}"></a>
+	</div>
+{/subcateposts}
+
+文章分类文章标签
+{cateposts name='post' cateid='1' num='10'}
+<li><a href="{:url('index/article/detail',['id'=>$post.id,'category'=>$post.category])}">{$post.title}</a></li>
+{$post.uuid|get_val=###,'description',30}
+{/cateposts}
+
+单页标签
+{$pageInfo['title']}
+{$pageInfo['content']}
+
+列表页标签
+{$categoryInfo['name']}
+{volist name="list" id="data"}
+<div class="left-list">
+	<div class="news-list"> 
+		<div class="news-img"><a href="{:url('Article/detail?id='.$data['id'].'&category='.$categoryInfo['slug'])}"><img src="{$data['uuid']|get_posts_cover}" alt=""></a></div>
+		<div class="news-content">
+		<p class="c-title"><a href="{:url('Article/detail?id='.$data['id'].'&category='.$categoryInfo['slug'])}">{$data['title']}</a></p>
+		<p class="c-info"><span>{$data['updatetime']|date='Y-m-d',###}</span><span>浏览量：{$data['view']}</span></p>
+		<p class="c-des"><a href="{:url('Article/detail?id='.$data['id'].'&category='.$categoryInfo['slug'])}">{$data['uuid']|get_val=###,'description',85}</a></p>
+		<a href="{:url('Article/detail?id='.$data['id'].'&category='.$categoryInfo['slug'])}" class="c-but">&nbsp;</a>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+{/volist}
+{$page}
+
+详情页标签
+{$postInfo['title']}
+{$postInfo['content']}
+{$postInfo['updatetime']|date='Y-m-d',###}
+{$postInfo['view']}
+上一篇
+{$postInfo['id']|get_pre=$categoryInfo['id']}
+下一篇
+{$postInfo['id']|get_next=$categoryInfo['id']}
+友情链接标签
+{link name="data"}
+		{eq name="key" value="0"}
+			<a href="{$data.url}">{$data.name}</a>
+		{else/}
+			&nbsp;|&nbsp;<a href="{$data.url}">{$data.name}</a>
+		{/eq}
+{/link}
+
+链接
+
+单页链接
+{:url('index/article/page','name=company')}
+文章列表链接
+{:url('index/article/lists','category=news')}
+文章详情链接
+{:url('index/article/detail',['id'=>$post.id,'category'=>$post.category])}
+商品列表链接
+{:url('index/goods/lists','category=cabbage')}
+商品详情链接
+{:url('index/goods/detail','id='.$goods.id)}
+
+后台导航设置连接实例
+article/lists?category=news
+article/page?name=company
+
+page分页样式
+<script>
+      $().ready(function(){
+            $('.pagination').find('li:first').find('span').html('上一页');
+            $('.pagination').find('li:last').find('a').html('下一页');
+            $('.pagination').find('li:first').find('a').html('上一页');
+            $('.pagination').find('li:last').find('span').html('下一页');
+      })
+</script>
+<style>
+.page{ text-align: center;}
+.pagination li a,.pagination li span{ color:#9e2125 !important;border: 1px solid #9e2125 !important;}
+.pagination .active span{ color:#fff !important; background-color: #9e2125;}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: #9e2125;
+    border-color: #9e2125;
+    color: #fff;
+    cursor: default;
+    z-index: 2;
+}
+</style>
+
+get_collection_count 获取商品的收藏总数
+get_collection_ico 或取当前用户是否收藏了该商品，返回图标

@@ -1,0 +1,195 @@
+{include file="common:head"}
+<body class="skin-blue sidebar-mini wysihtml5-supported fixed">
+<div class="wrapper">
+
+  {include file="common:header"}
+  <!-- Left side column. contains the logo and sidebar -->
+ 
+{include file="common:navbar"}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        设置
+        <small>基本设置</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><button onClick="javascript :history.back(-1);" type="button" class="btn btn-block btn-success btn-sm">返回上一页</button></li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+      <!-- form start -->
+          <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+           <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">基本设置</h3>
+             
+            </div>
+            <div class="tab-content">
+              <!-- Font Awesome Icons -->
+              <form  method="post" action="" id='form1'>
+              <div class="box-body">
+              <input name="id" hidden="hidden" value="{$list['id']}">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">配置标识 </label>
+                  <input type="text" class="form-control" id="key" name="key" value="{$list['key']}" placeholder="用于config函数调用，只能使用英文且不能重复" />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">配置名称</label>
+                  <input type="text" class="form-control" id="name" value="{$list['name']}" name="name" placeholder="用于后台显示的配置标题" />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">配置类型(系统会根据不同类型解析配置值)</label>
+                  <input type="text" class="form-control"  
+                  {switch name="list['type']"}
+                    {case value="1"} value="数字" name="type"  {/case}
+                    {case value="2"} value="字符" name="type"  {/case}
+                    {case value="3"} value="枚举" name="type"  {/case}
+                    {case value="4"} value="图片" name="type"  {/case}
+                  {/switch} disabled="true" />
+                  <input name="type" hidden="hidden" id="type" value="{$list['type']}">
+                </div>
+                <div class="form-group">
+                  <input type="hidden" id="close" value="{$list['group']}" />
+                  <label for="exampleInputPassword1">配置分组(配置分组，方便批量设置)</label>
+                  <select class="form-control" id="group" name="group">
+                    <option value="0">用户</option>
+                    <option value="1">系统</option>
+                    <option value="2">基本</option>
+                    <option value="3">内容</option>
+                  </select>
+                </div>
+                <div class="form-group" id="not-pic" {eq name="$list['type']" value="5"} style="display: none" {/eq} >
+                  <label for="exampleInputPassword1">配置值</label> 
+                  {switch name="$list['type']"}
+                    {case value="1|2|3"}<input type="text" class="form-control" value="{$list['value']}" id="value" name="value" placeholder="配置值" >{/case}
+                  {/switch}
+                </div> 
+                {notempty name="$list['extra']"}
+                <div class="form-group" >
+                  <label for="exampleInputPassword1">配置项(格式为XX|XXX|XX)</label>
+                  <textarea type="text" class="form-control" id="extra"  name="extra" placeholder="如果是枚举型或关联型 需要配置该项，格式为XX|XXX|XX" rows="5" />{$list['extra']}</textarea>
+                </div>
+                {/notempty}  
+                {eq name="$list['type']" value="5"}            
+                  <div class="form-group" id="pic">
+                      <label>封面图</label><br/>
+                      <div class="box-body">
+                        <div id="uploader-demo">
+                            <!--用来存放item-->
+                            <input type="hidden" name="value" class="cover_path">
+                            <div {eq name="$list['type']" value="5"} id="cover_path" {/eq} class="uploader-list">
+                              <div class="file-item thumbnail upload-state-done">
+                                {notempty name="list['value']"}
+                                  <img src="ROOT_PATH{$list['value']}" style="height: 150px;">
+                                {/notempty}
+                              </div>
+                            </div>
+                        </div>
+                      </div>                   
+                    <div class="insertCover">上传封面图</div>
+                  </div>  
+                {/eq}             
+                <div class="form-group">
+                  <label for="exampleInputPassword1">排序</label>
+                  <input type="number" class="form-control" id="sort" value="{$list['sort']}" name="sort" placeholder="按照从小到大的顺序排序" />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">说明</label>
+                  <input type="text" class="form-control" id="description" value="{$list['description']}" name="description" placeholder="配置详细说明" />
+                </div>               
+              <!-- /.box-body -->
+
+              <div class="pull-right">
+              <button class="btn btn-success" onclick="javascript:history.back(-1);return false;">返 回</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" onclick="submitInfo()" class="btn btn-primary">确定</button>
+              </div>
+            </form>
+                
+              </div>
+              <!-- /#fa-icons -->
+
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          </div>
+          <!-- /.nav-tabs-custom -->
+          </section>
+           </div>
+ 
+  <!-- /.content-wrapper -->
+  {include file="common:footer"}
+
+
+
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<script src="STATIC_PATH/plugins/jQuery/jquery-1.9.1.min.js"></script>
+<script src="STATIC_PATH/plugins/jQueryUI/jquery-ui.min.js"></script>
+<script type="text/javascript">
+  var uploadPictuer     = '{:url('Upload/uploadPicture')}';
+  var uploadFlash       = 'STATIC_PATH/plugins/webuploader/dist/Uploader.swf';
+  var ueditorUploadPath = '{:url('ueditor/index')}';
+</script>
+<link rel="stylesheet" type="text/css" href="STATIC_PATH/plugins/webuploader/css/webuploader.css" />
+<script type="text/javascript" src="STATIC_PATH/plugins/webuploader/dist/webuploader.js"></script>
+<script type="text/javascript" src="STATIC_PATH/plugins/webuploader/dist/onefile.js"></script>
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+  function submitInfo(){
+    $.ajax({
+      type: "POST",
+      cache: true,
+      url: "{:url('admin/config/edit')}",
+      data: $('#form1').serialize(),
+      dataType: "json",
+      async: false,
+      success: function(data) {
+        if (data.code) {
+          msgok(data.msg);
+          location.href = data.url;                
+        } else {
+          msgerr(data.msg);
+        }
+      },
+      error: function(request) {
+        msgerr("请重试");
+      }
+    });
+  }
+</script>
+<script type="text/javascript">
+  // var val_close = eval(document.getElementById('close')).value;
+
+  // var val_register =document.getElementById('register').value;
+  // var val_ticket =document.getElementById('ticket').value;
+  // alert(val_register);
+  // $("#site_close option[value="+val_close+"]").attr("selected",true);
+  // $("#allow_register option[value="+val_register+"]").attr("selected",true);
+  // $("#allow_ticket option[value="+val_ticket+"]").attr("selected",true);
+ </script>
+<!-- Bootstrap 3.3.6 -->
+<script src="STATIC_PATH/bootstrap/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="STATIC_PATH/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- AdminLTE App -->
+<script src="STATIC_PATH/dist/js/app.min.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+

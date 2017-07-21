@@ -1,0 +1,183 @@
+{include file="common:head"}
+<link rel="stylesheet" type="text/css" href="STATIC_PATH/plugins/webuploader/css/webuploader.css" />
+<script src="STATIC_PATH/plugins/jQuery/jquery-1.9.1.min.js"></script>
+<body class="skin-blue sidebar-mini wysihtml5-supported fixed">
+<div class="wrapper">
+  <style type="text/css">
+    label {
+    display: inline-block;
+    font-weight: 700;
+    margin-bottom: 5px;
+    max-width: 100%;
+    font-size: 12px;
+    }
+  </style>
+  {include file="common:header"}
+  <!-- Left side column. contains the logo and sidebar -->
+ 
+{include file="common:navbar"}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+  <section class="content-header">
+      <h1>        
+        广告管理
+        <small>编辑广告</small>           
+      </h1>
+      <ol class="breadcrumb">
+        <li><button onClick="javascript :history.back(-1);" type="button" class="btn btn-block btn-success btn-sm">返回上一页</button></li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+      <!-- form start -->
+          <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+           <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">编辑广告</h3>
+            </div>
+            <div class="tab-content">
+            <div class="tab-pane active" id="activity">
+              <!-- Font Awesome Icons -->
+              <form   method="post" action={:url('edit')} id="edit">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">广告名称</label>
+                  <input type="text" class="form-control" name="name" value="{$adInfo.name}" placeholder="广告名称" />
+                   <input name="id" hidden="hidden" value="{$adInfo['id']}">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">广告描述</label>
+                  <input type="text" class="form-control" id="description"  value="{$adInfo.description}" name="description" placeholder="广告描述" />
+                </div>
+                 <div class="form-group">
+                  <label for="exampleInputPassword1">广告位置</label>
+                  <select class="form-control Select" name="position" >
+                    <option value="0">无</option>
+                    {volist name="pos" id="list"}
+                    <option value="{$list.id}">{$list.title}</option>
+                    {/volist}
+                  </select>
+                </div>
+                 <div class="form-group">
+                  <label for="exampleInputPassword1">链接地址</label>
+                  <input type="text" class="form-control" id="link" value="{$adInfo.link}" name="link" placeholder="链接地址">
+                </div>
+                 <div class="form-group">
+                  <label for="exampleInputPassword1">优先级</label>
+                  <input type="text" class="form-control" id="level" value="{$adInfo.level}" name="level" placeholder="优先级">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">创建时间</label>
+                  <input type="text" readonly="time" class="form-control" id="createtime" value="{$adInfo.createtime|date='Y-m-d H:i:s',###}" name="createtime" placeholder="创建时间" />
+                </div>
+                <div class="form-group">
+                    <label class="" for="status">状态</label>
+                    <select name="status" id="status" class="form-control status">
+                      <option value="1">正常</option>
+                      <option value="2">禁用</option>
+                    </select>
+                </div>
+                  <div class="form-group">
+                    <label>封面图</label><br/>
+                    <div class="box-body">
+                      <div id="uploader-demo">
+                          <!--用来存放item-->
+                          <input type="hidden" name="banner_path" class="cover_path">
+                          <div id="cover_path" class="uploader-list">
+                            <div class="file-item thumbnail upload-state-done">
+                              {notempty name="adInfo.banner_path"}
+                                <img src="ROOT_PATH{$adInfo.banner_path}" style="height: 150px;">
+                              {/notempty}
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    
+                    <div class="insertCover">上传封面图</div>                                      
+                  </div>
+                  <div class="pull-right">
+                    <button class="btn btn-success" onclick="javascript:history.back(-1);return false;">返 回</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary submit">确 定</button>
+                  </div>
+                </div>
+              </form>
+
+            <script type="text/javascript"> 
+              $(function(){
+                $('.submit').click(function () {
+                  $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: '{:url('edit')}',
+                    data: $('#edit').serialize(),
+                    async: false,
+                      success: function(data) {
+                        if (data.code) {
+                          msgok(data.msg);
+                          setTimeout(function () {
+                            location.href = data.url;
+                          }, 1000);
+                        } else {
+                          msgerr(data.msg);
+                        }
+
+                      },
+                      error: function(request) {
+                        msgerr("页面错误");
+                      }
+                  });
+                });
+
+                // 设置select选中
+                $(".Select").val("{$adInfo['position']}");
+                $(".status").val("{$adInfo['status']}");
+              })  
+              
+            </script>
+             
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /. box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+  {include file="common:footer"}
+</div>
+<!-- ./wrapper -->
+<script type="text/javascript">
+  var uploadPictuer     = '{:url('Upload/uploadPicture')}'; 
+  var uploadFlash       = 'STATIC_PATH/plugins/webuploader/dist/Uploader.swf';  
+</script>
+<script type="text/javascript" src="STATIC_PATH/plugins/webuploader/dist/webuploader.js"></script>
+<script type="text/javascript" src="STATIC_PATH/plugins/webuploader/dist/onefile.js"></script>
+<!-- jQuery 2.2.0 -->
+<script src="STATIC_PATH/plugins/jQueryUI/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.6 -->
+<script src="STATIC_PATH/bootstrap/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="STATIC_PATH/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- AdminLTE App -->
+<script src="STATIC_PATH/dist/js/app.min.js"></script>
+
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,191 @@
+{include file="common:head"}
+<link rel="stylesheet" type="text/css" href="STATIC_PATH/plugins/webuploader/css/webuploader.css" />
+<script src="STATIC_PATH/plugins/jQuery/jquery-1.9.1.min.js"></script>
+<body class="skin-blue sidebar-mini wysihtml5-supported fixed">
+<div class="wrapper">
+  <style type="text/css">
+    label {
+    display: inline-block;
+    font-weight: 700;
+    margin-bottom: 5px;
+    max-width: 100%;
+    font-size: 12px;
+    }
+  </style>
+{include file="common:header"}
+<!-- Left side column. contains the logo and sidebar -->
+{include file="common:navbar"}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+       链接管理
+        <small>编辑链接</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><button onClick="javascript :history.back(-1);" type="button" class="btn btn-block btn-success btn-sm">返回上一页</button></li>
+      </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">编辑链接</h3>
+              
+            </div>
+            <div class="box-body no-padding">
+              <form method="post"  action="{:url('admin/links/edit')}" id="edit">
+                <div class="box-body">
+                  <div class="form-group">
+                    <label for="link_name" id="uname_label" class="">标题</label>
+                    <input class="form-control" id="link_name" name="link_name" value="{$linkInfo['name']}" placeholder="链接标题" type="text">
+                    <input name="id" hidden="hidden" value="{$linkInfo['id']}">
+                  </div>
+                  <div class="form-group">
+                    <label for="link_url" class="">URL</label>
+                    <input class="form-control" id="link_url" name="link_url" value="{$linkInfo['url']}" placeholder="链接地址" type="text">
+                  </div>                  
+                  <div class="form-group">
+                    <label for="target" class="">打开方式</label>
+                    <select class="form-control" id="target" name="target">
+                      {eq name="linkInfo.target" value="_blank"}
+                        <option value="_blank" selected="selected">新窗口</option>
+                        <option value="_self">本页面</option> 
+                      {else /}
+                        <option value="_blank" selected="selected">新窗口</option>
+                        <option value="_self">本页面</option>  
+                      {/eq}  
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="description" class="">描述</label>
+                    <input class="form-control" name="description" id="description" value="{$linkInfo['description']}" placeholder="链接描述" type="text">
+                  </div>
+                  <div class="form-group">
+                    <label for="visible" class="">是否显示</label>
+                    <select class="form-control" id="visible" name="visible">
+                      {eq name="linkInfo.visible" value="Y"}
+                        <option value="Y" selected="selected">显示</option>
+                        <option value="N">隐藏</option> 
+                      {else /}
+                        <option value="Y">显示</option>
+                        <option value="N" selected="selected">隐藏</option>   
+                      {/eq}           
+                    </select>
+                  </div>
+                  <!-- <div class="form-group">
+                    
+                    <label>封面图</label><br/>  
+                    <div class="box-body cover_show">
+                      <div class='form-group'>
+                        <img class='cover_path' style='max-height:150px;' src="ROOT_PATH{$linkInfo.image}">
+                      </div>
+                    </div>
+                    <a href="#" class="btn" data-toggle="modal" data-target="#myModal" style="background-color: #3c8dbc;border-color: #367fa9;border:1px solid transparent;color:#fff;">上传封面图</a>
+                    <input id="img_list" hidden="hidden" type="text" name="cover_path"/>                                         
+                  </div>   -->
+                  <div class="form-group">
+                    <label>封面图</label><br/>
+                    <div class="box-body">
+                      <div id="uploader-demo">
+                          <!--用来存放item-->
+                          <input type="hidden" name="cover_path" class="cover_path">
+                          <div id="cover_path" class="uploader-list">
+                            <div class="file-item thumbnail upload-state-done">
+                              {notempty name="linkInfo.image"}
+                                <img src="ROOT_PATH{$linkInfo.image}" style="height: 150px;">
+                              {/notempty}
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    
+                    <div class="insertCover">上传封面图</div>                                      
+                  </div>                                          
+                        
+                  <div class="pull-right">
+                    <button class="btn btn-success" onclick="javascript:history.back(-1);return false;">返 回</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary submit">确 定</button>
+                  </div>
+                </div>
+              </form>
+
+<script type="text/javascript"> 
+  $(function(){
+    $('.submit').click(function () {
+      $.ajax({
+        cache: true,
+        type: "POST",
+        url: '{:url('links/edit')}',
+        data: $('#edit').serialize(),
+        async: false,
+          success: function(data) {
+            if (data.code) {
+              msgok(data.msg);
+              setTimeout(function () {
+                location.href = data.url;
+              }, 1000);
+            } else {
+              msgerr(data.msg);
+            }
+          },
+          error: function(request) {
+            msgerr("页面错误");
+          }
+      });
+    });
+  })  
+   
+</script>
+             
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /. box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+  {include file="common:footer"}
+</div>
+<!-- ./wrapper -->
+<script type="text/javascript">
+  var uploadPictuer     = '{:url('Upload/uploadPicture')}';  
+  var uploadFlash       = 'STATIC_PATH/plugins/webuploader/dist/Uploader.swf'; 
+</script>
+
+<script type="text/javascript" src="STATIC_PATH/plugins/webuploader/dist/webuploader.js"></script>
+<script type="text/javascript" src="STATIC_PATH/plugins/webuploader/dist/onefile.js"></script>
+<!-- jQuery 2.2.0 -->
+<script src="STATIC_PATH/plugins/jQueryUI/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.6 -->
+<script src="STATIC_PATH/bootstrap/js/bootstrap.min.js"></script>
+<!-- Slimscroll -->
+<script src="STATIC_PATH/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- AdminLTE App -->
+<script src="STATIC_PATH/dist/js/app.min.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

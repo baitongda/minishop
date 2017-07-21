@@ -1,0 +1,78 @@
+ <header class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>M</b>S</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>小微云商</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <div class="navbar-custom-menu" style="float: left;">
+        <ul class="nav navbar-nav">
+          {volist name="menuTop" id="vo"}
+            <li >
+              <a href="{$vo.url}" class=" li-a-{$vo['id']}" style="font-size: 18px;">
+                {$vo['name']}
+              </a>
+            </li>
+          {/volist}
+        </ul>
+      </div>
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+           <li>
+            <a href="#" class="delelte-runtime" style="border:1px #fff solid;border-radius:25px;-moz-border-radius:25px;padding:2px 15px; margin-top: 12px;font-size: 12px;" aria-expanded="false">
+              清除缓存
+            </a>
+          </li> 
+<!--            <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning">10</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">您有 10 条通知</li>
+              <li>
+                <ul class="menu">
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-user text-red"></i> You changed your username
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="footer"><a href="#">查看所有</a></li>
+            </ul>
+          </li>  -->
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="hidden-xs">{:Session('admin_user_auth.username')}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">
+                  <a href="{:url('user/edit')}">个人资料</a>
+              </li>
+              <li class="footer">
+                   <a href="{:url('common/logout')}">退出</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
